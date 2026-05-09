@@ -418,6 +418,9 @@ public struct SystemSettingsDestination {
 - `.displays(anchor:)`
 - `.bluetooth`
 - `.loginItems`
+- `.loginItems(anchor:)`
+- `.wifi`
+- `.wifi(anchor:)`
 - `.privacy(anchor:)`
 
 ### 隐私权限锚点
@@ -502,6 +505,40 @@ SystemSettings.open(.displays(anchor: .nightShiftSection))
 - `.profileSection`：跳转到 `显示器 > 色彩配置文件`
 - `.resolutionSection`：跳转到 `显示器 > 分辨率`
 - `.sidecarSection`：跳转到 `显示器 > Sidecar`
+
+### 登录项子页面锚点
+
+“登录项”页面也支持强类型子页面锚点：
+
+```swift
+SystemSettings.open(.loginItems)
+SystemSettings.open(.loginItems(anchor: .extensionItems))
+SystemSettings.open(.loginItems(anchor: .startupItemsPref))
+```
+
+当前内置的登录项锚点，以及它们实际跳转到的位置：
+
+- `.extensionItems`：跳转到 `登录项 > Extension Items`
+- `.startupItemsPref`：跳转到 `登录项 > 登录项与后台项目`
+
+### Wi-Fi 子页面锚点
+
+“Wi-Fi”页面也支持强类型子页面锚点：
+
+```swift
+SystemSettings.open(.wifi)
+SystemSettings.open(.wifi(anchor: .generalMain))
+SystemSettings.open(.wifi(anchor: .generalJoin))
+SystemSettings.open(.wifi(anchor: .generalDetails))
+SystemSettings.open(.wifi(anchor: .advanced))
+```
+
+当前内置的 Wi-Fi 锚点，以及它们实际跳转到的位置：
+
+- `.advanced`：跳转到 `Wi-Fi > 高级`
+- `.generalDetails`：跳转到 `Wi-Fi > 详情`
+- `.generalJoin`：跳转到 `Wi-Fi > 加入网络`
+- `.generalMain`：跳转到 `Wi-Fi > 主页面`
 
 ## 配置项
 

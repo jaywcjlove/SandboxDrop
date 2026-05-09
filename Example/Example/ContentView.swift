@@ -279,7 +279,18 @@ struct ContentView: View {
                     settingsURLButton(title: "Network", symbolName: "network", tint: .cyan) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Network-Settings.extension")) }
                     settingsURLButton(title: "Passwords", symbolName: "key", tint: .yellow) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Passwords")) }
                     settingsURLButton(title: "Wallpaper", symbolName: "photo.on.rectangle", tint: .purple) { SystemSettings.open(.wallpaper) }
+                    settingsURLButton(title: "Wi-Fi", symbolName: "wifi", tint: .blue) { SystemSettings.open(.wifi) }
                     settingsURLButton(title: "Screen Saver", symbolName: "sparkles.tv", tint: .pink) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Wallpaper-Settings.extension", anchor: "ScreenSaver")) }
+                }
+            )
+
+            settingsURLGroup(
+                title: "Wi-Fi Sub-pages",
+                buttons: {
+                    settingsURLButton(title: "Wi-Fi Main", subtitle: "Navigate to Wi-Fi > Main", symbolName: "wifi", tint: .blue) { SystemSettings.open(.wifi(anchor: .generalMain)) }
+                    settingsURLButton(title: "Join Network", subtitle: "Navigate to Wi-Fi > Join Network", symbolName: "plus.circle", tint: .green) { SystemSettings.open(.wifi(anchor: .generalJoin)) }
+                    settingsURLButton(title: "Network Details", subtitle: "Navigate to Wi-Fi > Details", symbolName: "info.circle", tint: .cyan) { SystemSettings.open(.wifi(anchor: .generalDetails)) }
+                    settingsURLButton(title: "Advanced", subtitle: "Navigate to Wi-Fi > Advanced", symbolName: "slider.horizontal.3", tint: .gray) { SystemSettings.open(.wifi(anchor: .advanced)) }
                 }
             )
 
@@ -296,6 +307,14 @@ struct ContentView: View {
                     settingsURLButton(title: "Ambient Display", subtitle: "Navigate to Displays > Ambient Display", symbolName: "sparkles", tint: .purple) { SystemSettings.open(.displays(anchor: .ambienceSection)) }
                     settingsURLButton(title: "Display Characteristics", subtitle: "Navigate to Displays > Display Characteristics", symbolName: "dial.medium", tint: .teal) { SystemSettings.open(.displays(anchor: .characteristicSection)) }
                     settingsURLButton(title: "Miscellaneous", subtitle: "Navigate to Displays > Miscellaneous", symbolName: "ellipsis.circle", tint: .secondary) { SystemSettings.open(.displays(anchor: .miscellaneousSection)) }
+                }
+            )
+
+            settingsURLGroup(
+                title: "Login Items Sub-pages",
+                buttons: {
+                    settingsURLButton(title: "Extension Items", subtitle: "Navigate to Login Items > Extension Items", symbolName: "puzzlepiece.extension", tint: .purple) { SystemSettings.open(.loginItems(anchor: .extensionItems)) }
+                    settingsURLButton(title: "Startup Items", subtitle: "Navigate to Login Items > Login Items & Background Items", symbolName: "arrow.up.forward.app", tint: .brown) { SystemSettings.open(.loginItems(anchor: .startupItemsPref)) }
                 }
             )
 

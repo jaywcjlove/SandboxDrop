@@ -423,6 +423,9 @@ The package includes a few common helpers:
 - `.displays(anchor:)`
 - `.bluetooth`
 - `.loginItems`
+- `.loginItems(anchor:)`
+- `.wifi`
+- `.wifi(anchor:)`
 - `.privacy(anchor:)`
 
 ### Privacy anchors
@@ -507,6 +510,40 @@ Available display anchors and their destinations:
 - `.profileSection`: `Displays > Color Profile`
 - `.resolutionSection`: `Displays > Resolution`
 - `.sidecarSection`: `Displays > Sidecar`
+
+### Login Items anchors
+
+Login Items supports typed subsection anchors:
+
+```swift
+SystemSettings.open(.loginItems)
+SystemSettings.open(.loginItems(anchor: .extensionItems))
+SystemSettings.open(.loginItems(anchor: .startupItemsPref))
+```
+
+Available login item anchors and their destinations:
+
+- `.extensionItems`: `Login Items > Extension Items`
+- `.startupItemsPref`: `Login Items > Login Items & Background Items`
+
+### Wi-Fi anchors
+
+Wi-Fi supports typed subsection anchors:
+
+```swift
+SystemSettings.open(.wifi)
+SystemSettings.open(.wifi(anchor: .generalMain))
+SystemSettings.open(.wifi(anchor: .generalJoin))
+SystemSettings.open(.wifi(anchor: .generalDetails))
+SystemSettings.open(.wifi(anchor: .advanced))
+```
+
+Available Wi-Fi anchors and their destinations:
+
+- `.advanced`: `Wi-Fi > Advanced`
+- `.generalDetails`: `Wi-Fi > Details`
+- `.generalJoin`: `Wi-Fi > Join`
+- `.generalMain`: `Wi-Fi > Main`
 
 ## Configuration
 

@@ -30,6 +30,30 @@ public enum DisplaySettingsAnchor: String, CaseIterable, Sendable {
     case sidecarSection
 }
 
+/// Anchor points for navigating to specific sections within the Login Items settings pane.
+/// These anchors allow direct navigation to login items and extension items.
+@available(macOS 13.0, *)
+public enum LoginItemsSettingsAnchor: String, CaseIterable, Sendable {
+    /// Opens the extension items section.
+    case extensionItems = "ExtensionItems"
+    /// Opens the login and background items section.
+    case startupItemsPref = "startupItemsPref"
+}
+
+/// Anchor points for navigating to specific sections within the Wi-Fi settings pane.
+/// These anchors allow direct navigation to Wi-Fi overview, join, details, and advanced sections.
+@available(macOS 13.0, *)
+public enum WiFiSettingsAnchor: String, CaseIterable, Sendable {
+    /// Opens advanced Wi-Fi settings.
+    case advanced = "Advanced"
+    /// Opens Wi-Fi network details.
+    case generalDetails = "General_Details"
+    /// Opens the join network section.
+    case generalJoin = "General_Join"
+    /// Opens the main Wi-Fi section.
+    case generalMain = "General_Main"
+}
+
 /// Anchor points for navigating to specific sections within the Privacy & Security settings pane.
 /// These anchors allow direct navigation to subsections of the macOS System Settings Privacy & Security panel.
 @available(macOS 13.0, *)
@@ -185,6 +209,25 @@ public extension SystemSettingsDestination {
 
     /// Login items settings.
     static let loginItems = Self(paneIdentifier: "com.apple.LoginItems-Settings.extension")
+
+    /// Login items settings subsection.
+    static func loginItems(anchor: LoginItemsSettingsAnchor) -> Self {
+        Self(
+            paneIdentifier: "com.apple.LoginItems-Settings.extension",
+            anchor: anchor.rawValue
+        )
+    }
+
+    /// Wi-Fi settings.
+    static let wifi = Self(paneIdentifier: "com.apple.wifi-settings-extension")
+
+    /// Wi-Fi settings subsection.
+    static func wifi(anchor: WiFiSettingsAnchor) -> Self {
+        Self(
+            paneIdentifier: "com.apple.wifi-settings-extension",
+            anchor: anchor.rawValue
+        )
+    }
 }
 #elseif os(iOS)
 @available(iOS 16.0, *)
