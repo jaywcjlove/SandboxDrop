@@ -268,7 +268,7 @@ struct ContentView: View {
                 buttons: {
                     settingsURLButton(title: "Apple ID", symbolName: "person.crop.circle", tint: .blue) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.systempreferences.AppleIDSettings")) }
                     settingsURLButton(title: "Appearance", symbolName: "circle.lefthalf.filled", tint: .gray) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Appearance-Settings.extension")) }
-                    settingsURLButton(title: "Accessibility", symbolName: "accessibility", tint: .blue) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Accessibility-Settings.extension")) }
+                    settingsURLButton(title: "Accessibility", symbolName: "accessibility", tint: .blue) { SystemSettings.open(.accessibility) }
                     settingsURLButton(title: "Bluetooth", symbolName: "bolt.horizontal.circle", tint: .blue) { SystemSettings.open(.bluetooth) }
                     settingsURLButton(title: "Battery", symbolName: "battery.100", tint: .green) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Battery-Settings.extension")) }
                     settingsURLButton(title: "Date & Time", symbolName: "calendar", tint: .orange) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Date-Time-Settings.extension")) }
@@ -280,6 +280,7 @@ struct ContentView: View {
                     settingsURLButton(title: "Passwords", symbolName: "key", tint: .yellow) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Passwords")) }
                     settingsURLButton(title: "Wallpaper", symbolName: "photo.on.rectangle", tint: .purple) { SystemSettings.open(.wallpaper) }
                     settingsURLButton(title: "Wi-Fi", symbolName: "wifi", tint: .blue) { SystemSettings.open(.wifi) }
+                    settingsURLButton(title: "VPN", symbolName: "lock.shield", tint: .indigo) { SystemSettings.open(.vpn) }
                     settingsURLButton(title: "Screen Saver", symbolName: "sparkles.tv", tint: .pink) { SystemSettings.open(SystemSettingsDestination(paneIdentifier: "com.apple.Wallpaper-Settings.extension", anchor: "ScreenSaver")) }
                 }
             )
@@ -291,6 +292,25 @@ struct ContentView: View {
                     settingsURLButton(title: "Join Network", subtitle: "Navigate to Wi-Fi > Join Network", symbolName: "plus.circle", tint: .green) { SystemSettings.open(.wifi(anchor: .generalJoin)) }
                     settingsURLButton(title: "Network Details", subtitle: "Navigate to Wi-Fi > Details", symbolName: "info.circle", tint: .cyan) { SystemSettings.open(.wifi(anchor: .generalDetails)) }
                     settingsURLButton(title: "Advanced", subtitle: "Navigate to Wi-Fi > Advanced", symbolName: "slider.horizontal.3", tint: .gray) { SystemSettings.open(.wifi(anchor: .advanced)) }
+                }
+            )
+
+            settingsURLGroup(
+                title: "VPN Sub-pages",
+                buttons: {
+                    settingsURLButton(title: "VPN", subtitle: "Navigate to VPN > VPN", symbolName: "lock.shield", tint: .indigo) { SystemSettings.open(.vpn(anchor: .vpn)) }
+                    settingsURLButton(title: "VPN on Demand", subtitle: "Navigate to VPN > VPN on Demand", symbolName: "bolt.shield", tint: .purple) { SystemSettings.open(.vpn(anchor: .vpnOnDemand)) }
+                }
+            )
+
+            settingsURLGroup(
+                title: "Accessibility Sub-pages",
+                buttons: {
+                    settingsURLButton(title: "Display", subtitle: "Navigate to Accessibility > Display", symbolName: "display", tint: .blue) { SystemSettings.open(.accessibility(anchor: .display)) }
+                    settingsURLButton(title: "VoiceOver", subtitle: "Navigate to Accessibility > VoiceOver", symbolName: "speaker.wave.2", tint: .purple) { SystemSettings.open(.accessibility(anchor: .voiceOver)) }
+                    settingsURLButton(title: "Zoom", subtitle: "Navigate to Accessibility > Zoom", symbolName: "plus.magnifyingglass", tint: .indigo) { SystemSettings.open(.accessibility(anchor: .zoom)) }
+                    settingsURLButton(title: "Spoken Content", subtitle: "Navigate to Accessibility > Spoken Content", symbolName: "text.bubble", tint: .orange) { SystemSettings.open(.accessibility(anchor: .spokenContent)) }
+                    settingsURLButton(title: "Raw Anchor", subtitle: "Navigate with raw anchor AX_ZOOM_MAX_FACTOR", symbolName: "link", tint: .gray) { SystemSettings.open(.accessibility(anchor: "AX_ZOOM_MAX_FACTOR")) }
                 }
             )
 

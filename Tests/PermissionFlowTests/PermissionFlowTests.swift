@@ -56,6 +56,42 @@ func typedWiFiAnchorBuildsDeepLink() {
 }
 
 @Test
+func typedVPNAnchorBuildsDeepLink() {
+    #expect(
+        SystemSettingsDestination.vpn.url.absoluteString ==
+        "x-apple.systempreferences:com.apple.NetworkExtensionSettingsUI.NESettingsUIExtension*vpn"
+    )
+    #expect(
+        SystemSettingsDestination.vpn(anchor: .vpn).url.absoluteString ==
+        "x-apple.systempreferences:com.apple.NetworkExtensionSettingsUI.NESettingsUIExtension*vpn?VPN"
+    )
+    #expect(
+        SystemSettingsDestination.vpn(anchor: .vpnOnDemand).url.absoluteString ==
+        "x-apple.systempreferences:com.apple.NetworkExtensionSettingsUI.NESettingsUIExtension*vpn?VPN%20on%20Demand"
+    )
+}
+
+@Test
+func accessibilityAnchorBuildsDeepLink() {
+    #expect(
+        SystemSettingsDestination.accessibility.url.absoluteString ==
+        "x-apple.systempreferences:com.apple.Accessibility-Settings.extension"
+    )
+    #expect(
+        SystemSettingsDestination.accessibility(anchor: .voiceOver).url.absoluteString ==
+        "x-apple.systempreferences:com.apple.Accessibility-Settings.extension?AX_feature.voiceOver"
+    )
+    #expect(
+        SystemSettingsDestination.accessibility(anchor: .spokenContent).url.absoluteString ==
+        "x-apple.systempreferences:com.apple.Accessibility-Settings.extension?AX_FEATURE_SPOKENCONTENT"
+    )
+    #expect(
+        SystemSettingsDestination.accessibility(anchor: "AX_ZOOM_MAX_FACTOR").url.absoluteString ==
+        "x-apple.systempreferences:com.apple.Accessibility-Settings.extension?AX_ZOOM_MAX_FACTOR"
+    )
+}
+
+@Test
 @MainActor
 func controllerAcceptsOnlyUniqueAppBundles() {
     let controller = PermissionFlowController()

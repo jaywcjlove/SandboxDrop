@@ -421,11 +421,15 @@ The package includes a few common helpers:
 - `.wallpaper`
 - `.displays`
 - `.displays(anchor:)`
+- `.accessibility`
+- `.accessibility(anchor:)`
 - `.bluetooth`
 - `.loginItems`
 - `.loginItems(anchor:)`
 - `.wifi`
 - `.wifi(anchor:)`
+- `.vpn`
+- `.vpn(anchor:)`
 - `.privacy(anchor:)`
 
 ### Privacy anchors
@@ -544,6 +548,64 @@ Available Wi-Fi anchors and their destinations:
 - `.generalDetails`: `Wi-Fi > Details`
 - `.generalJoin`: `Wi-Fi > Join`
 - `.generalMain`: `Wi-Fi > Main`
+
+### VPN anchors
+
+VPN supports typed subsection anchors:
+
+```swift
+SystemSettings.open(.vpn)
+SystemSettings.open(.vpn(anchor: .vpn))
+SystemSettings.open(.vpn(anchor: .vpnOnDemand))
+```
+
+Available VPN anchors and their destinations:
+
+- `.vpn`: `VPN > VPN`
+- `.vpnOnDemand`: `VPN > VPN on Demand`
+
+### Accessibility anchors
+
+Accessibility has a typed helper for common sections and a raw string fallback for detailed control-level anchors:
+
+```swift
+SystemSettings.open(.accessibility)
+SystemSettings.open(.accessibility(anchor: .display))
+SystemSettings.open(.accessibility(anchor: .voiceOver))
+SystemSettings.open(.accessibility(anchor: "AX_ZOOM_MAX_FACTOR"))
+```
+
+Available common accessibility anchors:
+
+- `.display`: `Accessibility > Display`
+- `.text`: `Accessibility > Text`
+- `.pointer`: `Accessibility > Pointer`
+- `.mouseAndTrackpad`: `Accessibility > Mouse & Trackpad`
+- `.headphones`: `Accessibility > Headphones`
+- `.voiceOver`: `Accessibility > VoiceOver`
+- `.zoom`: `Accessibility > Zoom`
+- `.displayFilters`: `Accessibility > Display Filters`
+- `.backgroundSounds`: `Accessibility > Background Sounds`
+- `.spokenContent`: `Accessibility > Spoken Content`
+- `.captions`: `Accessibility > Captions`
+- `.audio`: `Accessibility > Audio`
+- `.descriptions`: `Accessibility > Audio Descriptions`
+- `.keyboard`: `Accessibility > Keyboard`
+- `.fullKeyboardAccess`: `Accessibility > Full Keyboard Access`
+- `.stickyKeys`: `Accessibility > Sticky Keys`
+- `.slowKeys`: `Accessibility > Slow Keys`
+- `.virtualKeyboard`: `Accessibility > Accessibility Keyboard`
+- `.voiceControl`: `Accessibility > Voice Control`
+- `.switchControl`: `Accessibility > Switch Control`
+- `.alternateMouseButtons`: `Accessibility > Alternate Mouse Buttons`
+- `.headMouse`: `Accessibility > Head Pointer`
+- `.mouseKeys`: `Accessibility > Mouse Keys`
+- `.hoverText`: `Accessibility > Hover Text`
+- `.hoverTyping`: `Accessibility > Hover Typing`
+- `.liveSpeech`: `Accessibility > Live Speech`
+- `.personalVoice`: `Accessibility > Personal Voice`
+- `.siri`: `Accessibility > Siri`
+- `.shortcut`: `Accessibility > Accessibility Shortcut`
 
 ## Configuration
 

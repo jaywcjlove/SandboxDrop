@@ -54,6 +54,80 @@ public enum WiFiSettingsAnchor: String, CaseIterable, Sendable {
     case generalMain = "General_Main"
 }
 
+/// Anchor points for navigating to specific sections within the VPN settings pane.
+/// These anchors allow direct navigation to VPN and VPN on Demand settings.
+@available(macOS 13.0, *)
+public enum VPNSettingsAnchor: String, CaseIterable, Sendable {
+    /// Opens VPN settings.
+    case vpn = "VPN"
+    /// Opens VPN on Demand settings.
+    case vpnOnDemand = "VPN on Demand"
+}
+
+/// Common anchor points for navigating to major sections within the Accessibility settings pane.
+/// Use `SystemSettingsDestination.accessibility(anchor: String)` for less common control-level anchors.
+@available(macOS 13.0, *)
+public enum AccessibilitySettingsAnchor: String, CaseIterable, Sendable {
+    /// Opens the Display accessibility section.
+    case display = "display"
+    /// Opens the Text accessibility section.
+    case text = "text"
+    /// Opens pointer appearance settings.
+    case pointer = "pointer"
+    /// Opens mouse and trackpad accessibility settings.
+    case mouseAndTrackpad = "mouseAndTrackpad"
+    /// Opens headphone accessibility settings.
+    case headphones = "headphones"
+    /// Opens VoiceOver settings.
+    case voiceOver = "AX_feature.voiceOver"
+    /// Opens Zoom accessibility settings.
+    case zoom = "AX_feature.zoom"
+    /// Opens display filter settings.
+    case displayFilters = "AX_feature.displayFilters"
+    /// Opens background sounds settings.
+    case backgroundSounds = "AX_feature.backgroundSounds"
+    /// Opens Spoken Content settings.
+    case spokenContent = "AX_FEATURE_SPOKENCONTENT"
+    /// Opens Captions settings.
+    case captions = "AX_FEATURE_CAPTIONS"
+    /// Opens Audio accessibility settings.
+    case audio = "AX_FEATURE_AUDIO"
+    /// Opens Audio Descriptions settings.
+    case descriptions = "AX_FEATURE_DESCRIPTIONS"
+    /// Opens Keyboard accessibility settings.
+    case keyboard = "AX_FEATURE_KEYBOARD"
+    /// Opens Full Keyboard Access settings.
+    case fullKeyboardAccess = "AX_feature.fullKeyboardAccess"
+    /// Opens Sticky Keys settings.
+    case stickyKeys = "AX_feature.stickyKeys"
+    /// Opens Slow Keys settings.
+    case slowKeys = "AX_feature.slowKeys"
+    /// Opens Accessibility Keyboard settings.
+    case virtualKeyboard = "AX_feature.virtualKeyboard"
+    /// Opens Voice Control settings.
+    case voiceControl = "AX_feature.voiceControl"
+    /// Opens Switch Control settings.
+    case switchControl = "AX_feature.switchControl"
+    /// Opens Alternate Mouse Buttons settings.
+    case alternateMouseButtons = "AX_feature.alternateMouseButtons"
+    /// Opens Head Pointer settings.
+    case headMouse = "AX_feature.headMouse"
+    /// Opens Mouse Keys settings.
+    case mouseKeys = "AX_feature.mouseKeys"
+    /// Opens Hover Text settings.
+    case hoverText = "AX_feature.hoverText"
+    /// Opens Hover Typing settings.
+    case hoverTyping = "AX_feature.hoverTyping"
+    /// Opens Live Speech settings.
+    case liveSpeech = "AX_feature.liveSpeech"
+    /// Opens Personal Voice settings.
+    case personalVoice = "AX_FEATURE_PERSONALVOICE"
+    /// Opens Siri accessibility settings.
+    case siri = "AX_FEATURE_SIRI"
+    /// Opens Accessibility Shortcut settings.
+    case shortcut = "AX_FEATURE_SHORTCUT"
+}
+
 /// Anchor points for navigating to specific sections within the Privacy & Security settings pane.
 /// These anchors allow direct navigation to subsections of the macOS System Settings Privacy & Security panel.
 @available(macOS 13.0, *)
@@ -226,6 +300,36 @@ public extension SystemSettingsDestination {
         Self(
             paneIdentifier: "com.apple.wifi-settings-extension",
             anchor: anchor.rawValue
+        )
+    }
+
+    /// VPN settings.
+    static let vpn = Self(paneIdentifier: "com.apple.NetworkExtensionSettingsUI.NESettingsUIExtension*vpn")
+
+    /// VPN settings subsection.
+    static func vpn(anchor: VPNSettingsAnchor) -> Self {
+        Self(
+            paneIdentifier: "com.apple.NetworkExtensionSettingsUI.NESettingsUIExtension*vpn",
+            anchor: anchor.rawValue
+        )
+    }
+
+    /// Accessibility settings.
+    static let accessibility = Self(paneIdentifier: "com.apple.Accessibility-Settings.extension")
+
+    /// Accessibility settings subsection.
+    static func accessibility(anchor: AccessibilitySettingsAnchor) -> Self {
+        Self(
+            paneIdentifier: "com.apple.Accessibility-Settings.extension",
+            anchor: anchor.rawValue
+        )
+    }
+
+    /// Accessibility settings subsection from a raw anchor string.
+    static func accessibility(anchor: String) -> Self {
+        Self(
+            paneIdentifier: "com.apple.Accessibility-Settings.extension",
+            anchor: anchor
         )
     }
 }

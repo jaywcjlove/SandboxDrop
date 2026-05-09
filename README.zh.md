@@ -416,11 +416,15 @@ public struct SystemSettingsDestination {
 - `.wallpaper`
 - `.displays`
 - `.displays(anchor:)`
+- `.accessibility`
+- `.accessibility(anchor:)`
 - `.bluetooth`
 - `.loginItems`
 - `.loginItems(anchor:)`
 - `.wifi`
 - `.wifi(anchor:)`
+- `.vpn`
+- `.vpn(anchor:)`
 - `.privacy(anchor:)`
 
 ### 隐私权限锚点
@@ -539,6 +543,64 @@ SystemSettings.open(.wifi(anchor: .advanced))
 - `.generalDetails`：跳转到 `Wi-Fi > 详情`
 - `.generalJoin`：跳转到 `Wi-Fi > 加入网络`
 - `.generalMain`：跳转到 `Wi-Fi > 主页面`
+
+### VPN 子页面锚点
+
+“VPN”页面也支持强类型子页面锚点：
+
+```swift
+SystemSettings.open(.vpn)
+SystemSettings.open(.vpn(anchor: .vpn))
+SystemSettings.open(.vpn(anchor: .vpnOnDemand))
+```
+
+当前内置的 VPN 锚点，以及它们实际跳转到的位置：
+
+- `.vpn`：跳转到 `VPN > VPN`
+- `.vpnOnDemand`：跳转到 `VPN > VPN on Demand`
+
+### 辅助功能子页面锚点
+
+“辅助功能”页面提供常用子页面的强类型封装，也保留 raw string 形式用于更细的控件级 anchor：
+
+```swift
+SystemSettings.open(.accessibility)
+SystemSettings.open(.accessibility(anchor: .display))
+SystemSettings.open(.accessibility(anchor: .voiceOver))
+SystemSettings.open(.accessibility(anchor: "AX_ZOOM_MAX_FACTOR"))
+```
+
+当前内置的常用辅助功能锚点：
+
+- `.display`：跳转到 `辅助功能 > 显示`
+- `.text`：跳转到 `辅助功能 > 文本`
+- `.pointer`：跳转到 `辅助功能 > 指针`
+- `.mouseAndTrackpad`：跳转到 `辅助功能 > 鼠标与触控板`
+- `.headphones`：跳转到 `辅助功能 > 耳机`
+- `.voiceOver`：跳转到 `辅助功能 > VoiceOver`
+- `.zoom`：跳转到 `辅助功能 > 缩放`
+- `.displayFilters`：跳转到 `辅助功能 > 显示过滤器`
+- `.backgroundSounds`：跳转到 `辅助功能 > 背景声`
+- `.spokenContent`：跳转到 `辅助功能 > 朗读内容`
+- `.captions`：跳转到 `辅助功能 > 字幕`
+- `.audio`：跳转到 `辅助功能 > 音频`
+- `.descriptions`：跳转到 `辅助功能 > 音频描述`
+- `.keyboard`：跳转到 `辅助功能 > 键盘`
+- `.fullKeyboardAccess`：跳转到 `辅助功能 > 全键盘访问`
+- `.stickyKeys`：跳转到 `辅助功能 > 粘滞键`
+- `.slowKeys`：跳转到 `辅助功能 > 慢速键`
+- `.virtualKeyboard`：跳转到 `辅助功能 > 辅助功能键盘`
+- `.voiceControl`：跳转到 `辅助功能 > 语音控制`
+- `.switchControl`：跳转到 `辅助功能 > 切换控制`
+- `.alternateMouseButtons`：跳转到 `辅助功能 > 替代鼠标按钮`
+- `.headMouse`：跳转到 `辅助功能 > 头控指针`
+- `.mouseKeys`：跳转到 `辅助功能 > 鼠标键`
+- `.hoverText`：跳转到 `辅助功能 > 悬停文本`
+- `.hoverTyping`：跳转到 `辅助功能 > 悬停输入`
+- `.liveSpeech`：跳转到 `辅助功能 > 实时语音`
+- `.personalVoice`：跳转到 `辅助功能 > 个人声音`
+- `.siri`：跳转到 `辅助功能 > Siri`
+- `.shortcut`：跳转到 `辅助功能 > 辅助功能快捷键`
 
 ## 配置项
 
