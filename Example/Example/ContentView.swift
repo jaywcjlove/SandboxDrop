@@ -334,7 +334,16 @@ struct ContentView: View {
                 title: "Login Items Sub-pages",
                 buttons: {
                     settingsURLButton(title: "Extension Items", subtitle: "Navigate to Login Items > Extension Items", symbolName: "puzzlepiece.extension", tint: .purple) { SystemSettings.open(.loginItems(anchor: .extensionItems)) }
-                    settingsURLButton(title: "Startup Items", subtitle: "Navigate to Login Items > Login Items & Background Items", symbolName: "arrow.up.forward.app", tint: .brown) { SystemSettings.open(.loginItems(anchor: .startupItemsPref)) }
+                    settingsURLButton(title: "Share Menu", subtitle: "Navigate to Login Items & Extensions > Share Menu", symbolName: "square.and.arrow.up", tint: .teal) { SystemSettings.open(.loginItems(extensionPointIdentifier: .shareServices)) }
+                    settingsURLButton(title: "Actions", subtitle: "Navigate to Login Items & Extensions > Actions", symbolName: "wand.and.sparkles", tint: .pink) { SystemSettings.open(.loginItems(extensionPointIdentifier: .actions)) }
+                    settingsURLButton(title: "Photo Editing", subtitle: "Navigate to Login Items & Extensions > Photo Editing", symbolName: "photo", tint: .orange) { SystemSettings.open(.loginItems(extensionPointIdentifier: .photoEditing)) }
+                    settingsURLButton(title: "Spotlight Importers", subtitle: "Navigate to Login Items & Extensions > Spotlight", symbolName: "magnifyingglass", tint: .blue) { SystemSettings.open(.loginItems(extensionPointIdentifier: .spotlightImporter)) }
+                    settingsURLButton(title: "Quick Look Previews", subtitle: "Navigate to Login Items & Extensions > Quick Look", symbolName: "eye", tint: .indigo) { SystemSettings.open(.loginItems(extensionPointIdentifier: .quickLookPreview)) }
+                    settingsURLButton(title: "File Providers", subtitle: "Navigate to Login Items & Extensions > File Providers", symbolName: "externaldrive.connected.to.line.below", tint: .mint) { SystemSettings.open(.loginItems(extensionPointIdentifier: .fileProvider)) }
+                    settingsURLButton(title: "Finder Quick Actions", subtitle: "Navigate to Login Items & Extensions > Finder Quick Actions", symbolName: "folder.badge.gearshape", tint: .green) { SystemSettings.open(.loginItems(extensionPointIdentifier: .finderQuickActions)) }
+                    settingsURLButton(title: "Touch Bar Quick Actions", subtitle: "Navigate to Login Items & Extensions > Touch Bar Quick Actions", symbolName: "rectangle.inset.filled", tint: .gray) { SystemSettings.open(.loginItems(extensionPointIdentifier: .touchBarQuickActions)) }
+                    settingsURLButton(title: "Legacy Dock Tiles", subtitle: "Navigate to Login Items & Extensions > Legacy Dock Tiles", symbolName: "dock.rectangle", tint: .blue) { SystemSettings.open(.loginItems(extensionPointIdentifier: .legacyDockTiles)) }
+                    settingsURLButton(title: "Legacy Spotlight Importers", subtitle: "Navigate to Login Items & Extensions > Legacy Spotlight Importers", symbolName: "magnifyingglass.circle", tint: .indigo) { SystemSettings.open(.loginItems(extensionPointIdentifier: .legacySpotlightImporter)) }
                 }
             )
 

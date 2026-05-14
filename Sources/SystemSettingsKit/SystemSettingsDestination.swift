@@ -36,8 +36,31 @@ public enum DisplaySettingsAnchor: String, CaseIterable, Sendable {
 public enum LoginItemsSettingsAnchor: String, CaseIterable, Sendable {
     /// Opens the extension items section.
     case extensionItems = "ExtensionItems"
-    /// Opens the login and background items section.
-    case startupItemsPref = "startupItemsPref"
+}
+
+/// Extension point identifiers that System Settings can open inside Login Items & Extensions.
+@available(macOS 13.0, *)
+public enum LoginItemsExtensionPointIdentifier: String, CaseIterable, Sendable {
+    /// Opens the Share Menu extension settings.
+    case shareServices = "com.apple.share-services"
+    /// Opens the Actions extension settings.
+    case actions = "com.apple.ui-services"
+    /// Opens the Photo Editing extension settings.
+    case photoEditing = "com.apple.photo-editing"
+    /// Opens the Spotlight importer extension settings.
+    case spotlightImporter = "com.apple.spotlight.import"
+    /// Opens the Quick Look previews extension settings.
+    case quickLookPreview = "com.apple.quicklook.preview"
+    /// Opens the File Provider extension settings.
+    case fileProvider = "com.apple.fileprovider-nonui"
+    /// Opens the Finder Quick Actions extension settings.
+    case finderQuickActions = "com.apple.finder-quick-actions"
+    /// Opens the Touch Bar Quick Actions extension settings.
+    case touchBarQuickActions = "com.apple.touchbar-quick-actions"
+    /// Opens the legacy Dock tile plugin settings.
+    case legacyDockTiles = "com.apple.extensionkit.legacy-plugins.docktiles"
+    /// Opens the legacy Spotlight importer plugin settings.
+    case legacySpotlightImporter = "com.apple.extensionkit.legacy-plugins.spotlight-importer"
 }
 
 /// Anchor points for navigating to specific sections within the Wi-Fi settings pane.
@@ -290,6 +313,19 @@ public extension SystemSettingsDestination {
             paneIdentifier: "com.apple.LoginItems-Settings.extension",
             anchor: anchor.rawValue
         )
+    }
+
+    /// Login Items & Extensions settings for a specific extension point identifier.
+    static func loginItems(extensionPointIdentifier: String) -> Self {
+        Self(
+            paneIdentifier: "com.apple.ExtensionsPreferences",
+            anchor: "extensionPointIdentifier=\(extensionPointIdentifier)"
+        )
+    }
+
+    /// Login Items & Extensions settings for a typed extension point identifier.
+    static func loginItems(extensionPointIdentifier: LoginItemsExtensionPointIdentifier) -> Self {
+        loginItems(extensionPointIdentifier: extensionPointIdentifier.rawValue)
     }
 
     /// Wi-Fi settings.

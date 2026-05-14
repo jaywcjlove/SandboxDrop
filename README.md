@@ -426,6 +426,7 @@ The package includes a few common helpers:
 - `.bluetooth`
 - `.loginItems`
 - `.loginItems(anchor:)`
+- `.loginItems(extensionPointIdentifier:)`
 - `.wifi`
 - `.wifi(anchor:)`
 - `.vpn`
@@ -522,13 +523,23 @@ Login Items supports typed subsection anchors:
 ```swift
 SystemSettings.open(.loginItems)
 SystemSettings.open(.loginItems(anchor: .extensionItems))
-SystemSettings.open(.loginItems(anchor: .startupItemsPref))
+SystemSettings.open(.loginItems(extensionPointIdentifier: .quickLookPreview))
+SystemSettings.open(.loginItems(extensionPointIdentifier: .shareServices))
 ```
 
-Available login item anchors and their destinations:
+Available login item anchors and extension point helpers:
 
 - `.extensionItems`: `Login Items > Extension Items`
-- `.startupItemsPref`: `Login Items > Login Items & Background Items`
+- `.shareServices`: `extensionPointIdentifier=com.apple.share-services`
+- `.actions`: `extensionPointIdentifier=com.apple.ui-services`
+- `.photoEditing`: `extensionPointIdentifier=com.apple.photo-editing`
+- `.spotlightImporter`: `extensionPointIdentifier=com.apple.spotlight.import`
+- `.quickLookPreview`: `Login Items & Extensions > Extensions > Quick Look`, using `extensionPointIdentifier=com.apple.quicklook.preview`
+- `.fileProvider`: `extensionPointIdentifier=com.apple.fileprovider-nonui`
+- `.finderQuickActions`: `extensionPointIdentifier=com.apple.finder-quick-actions`
+- `.touchBarQuickActions`: `extensionPointIdentifier=com.apple.touchbar-quick-actions`
+- `.legacyDockTiles`: `extensionPointIdentifier=com.apple.extensionkit.legacy-plugins.docktiles`
+- `.legacySpotlightImporter`: `extensionPointIdentifier=com.apple.extensionkit.legacy-plugins.spotlight-importer`
 
 ### Wi-Fi anchors
 

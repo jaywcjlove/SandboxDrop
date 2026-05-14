@@ -26,9 +26,20 @@ func typedLoginItemsAnchorBuildsDeepLink() {
         "x-apple.systempreferences:com.apple.LoginItems-Settings.extension?ExtensionItems"
     )
     #expect(
-        SystemSettingsDestination.loginItems(anchor: .startupItemsPref).url.absoluteString ==
-        "x-apple.systempreferences:com.apple.LoginItems-Settings.extension?startupItemsPref"
+        SystemSettingsDestination.loginItems(extensionPointIdentifier: .quickLookPreview).url.absoluteString ==
+        "x-apple.systempreferences:com.apple.ExtensionsPreferences?extensionPointIdentifier=com.apple.quicklook.preview"
     )
+    #expect(
+        SystemSettingsDestination.loginItems(extensionPointIdentifier: "com.apple.quicklook.preview").url.absoluteString ==
+        "x-apple.systempreferences:com.apple.ExtensionsPreferences?extensionPointIdentifier=com.apple.quicklook.preview"
+    )
+
+    for extensionPointIdentifier in LoginItemsExtensionPointIdentifier.allCases {
+        #expect(
+            SystemSettingsDestination.loginItems(extensionPointIdentifier: extensionPointIdentifier).url.absoluteString ==
+            "x-apple.systempreferences:com.apple.ExtensionsPreferences?extensionPointIdentifier=\(extensionPointIdentifier.rawValue)"
+        )
+    }
 }
 
 @Test

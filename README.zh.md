@@ -421,6 +421,7 @@ public struct SystemSettingsDestination {
 - `.bluetooth`
 - `.loginItems`
 - `.loginItems(anchor:)`
+- `.loginItems(extensionPointIdentifier:)`
 - `.wifi`
 - `.wifi(anchor:)`
 - `.vpn`
@@ -517,13 +518,23 @@ SystemSettings.open(.displays(anchor: .nightShiftSection))
 ```swift
 SystemSettings.open(.loginItems)
 SystemSettings.open(.loginItems(anchor: .extensionItems))
-SystemSettings.open(.loginItems(anchor: .startupItemsPref))
+SystemSettings.open(.loginItems(extensionPointIdentifier: .quickLookPreview))
+SystemSettings.open(.loginItems(extensionPointIdentifier: .shareServices))
 ```
 
-当前内置的登录项锚点，以及它们实际跳转到的位置：
+当前内置的登录项锚点和 extension point helper，以及它们实际跳转到的位置：
 
 - `.extensionItems`：跳转到 `登录项 > Extension Items`
-- `.startupItemsPref`：跳转到 `登录项 > 登录项与后台项目`
+- `.shareServices`：`extensionPointIdentifier=com.apple.share-services`
+- `.actions`：`extensionPointIdentifier=com.apple.ui-services`
+- `.photoEditing`：`extensionPointIdentifier=com.apple.photo-editing`
+- `.spotlightImporter`：`extensionPointIdentifier=com.apple.spotlight.import`
+- `.quickLookPreview`：跳转到 `登录项与扩展 > 扩展 > Quick Look`，使用 `extensionPointIdentifier=com.apple.quicklook.preview`
+- `.fileProvider`：`extensionPointIdentifier=com.apple.fileprovider-nonui`
+- `.finderQuickActions`：`extensionPointIdentifier=com.apple.finder-quick-actions`
+- `.touchBarQuickActions`：`extensionPointIdentifier=com.apple.touchbar-quick-actions`
+- `.legacyDockTiles`：`extensionPointIdentifier=com.apple.extensionkit.legacy-plugins.docktiles`
+- `.legacySpotlightImporter`：`extensionPointIdentifier=com.apple.extensionkit.legacy-plugins.spotlight-importer`
 
 ### Wi-Fi 子页面锚点
 
