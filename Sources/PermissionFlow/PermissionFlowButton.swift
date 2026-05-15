@@ -7,6 +7,7 @@ public struct PermissionFlowButton: View {
     @Environment(\.locale) var locale
     @StateObject private var controller: PermissionFlowController
     @State private var buttonState: PermissionFlowButtonState
+    @State private var buttonFrameInScreen: CGRect?
     private let pane: PermissionFlowPane
     private let suggestedAppURLs: [URL]
     private let title: LocalizedStringResource?
@@ -28,11 +29,12 @@ public struct PermissionFlowButton: View {
 
     public var body: some View {
         Button {
+            let sourceFrame = clickSourceFrameInScreen()
             controller.setLocaleIdentifier(locale.identifier)
             controller.authorize(
                 pane: pane,
                 suggestedAppURLs: suggestedAppURLs,
-                sourceFrameInScreen: clickSourceFrameInScreen()
+                sourceFrameInScreen: sourceFrame
             )
         } label: {
             Label {
@@ -46,19 +48,77 @@ public struct PermissionFlowButton: View {
         .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
             refreshAuthorizationStatus()
         }
+        .background(ScreenFrameReader(frame: $buttonFrameInScreen))
     }
 
-    /// Uses the exact click location as the launch point so the panel appears
-    /// to fly out from where the user pressed the button.
+    /// Uses the actual button bounds instead of the latest mouse location.
+    /// This keeps the launch source stable when hosted inside AppKit or when
+    /// the click event is forwarded indirectly.
     private func clickSourceFrameInScreen() -> CGRect {
-        let mouse = NSEvent.mouseLocation
-        return CGRect(x: mouse.x - 16, y: mouse.y - 16, width: 32, height: 32)
+        buttonFrameInScreen ?? .zero
     }
 
     private func refreshAuthorizationStatus() {
         let provider = PermissionStatusRegistry.provider(for: pane)
         let authState = provider.authorizationState()
         buttonState = PermissionFlowButtonState.make(from: authState)
+    }
+}
+
+@available(macOS 13.0, *)
+private struct ScreenFrameReader: NSViewRepresentable {
+    @Binding var frame: CGRect?
+
+    func makeNSView(context: Context) -> FrameReadingView {
+        let view = FrameReadingView()
+        view.onFrameChange = { newFrame in
+            guard frame != newFrame else { return }
+            DispatchQueue.main.async {
+                frame = newFrame
+            }
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: FrameReadingView, context: Context) {
+        nsView.onFrameChange = { newFrame in
+            guard frame != newFrame else { return }
+            DispatchQueue.main.async {
+                frame = newFrame
+            }
+        }
+        nsView.publishFrame()
+    }
+}
+
+@available(macOS 13.0, *)
+private final class FrameReadingView: NSView {
+    var onFrameChange: ((CGRect?) -> Void)?
+
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        publishFrame()
+    }
+
+    override func setFrameSize(_ newSize: NSSize) {
+        super.setFrameSize(newSize)
+        publishFrame()
+    }
+
+    override func setFrameOrigin(_ newOrigin: NSPoint) {
+        super.setFrameOrigin(newOrigin)
+        publishFrame()
+    }
+
+    func publishFrame() {
+        guard let window else {
+            onFrameChange?(nil)
+            return
+        }
+
+        let frameInWindow = convert(bounds, to: nil)
+        let frameInScreen = window.convertToScreen(frameInWindow)
+        onFrameChange?(frameInScreen)
     }
 }
 #endif

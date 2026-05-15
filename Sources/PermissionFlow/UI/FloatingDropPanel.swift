@@ -30,6 +30,8 @@ final class FloatingDropPanel: NSPanel {
     private var launchFromFrame = NSRect.zero
     private var launchToFrame = NSRect.zero
     private var isAnimatingLaunch = false
+    private var preparedLaunchSourceFrameInScreen: CGRect?
+    private var preparedLaunchFromFrame: CGRect?
     private var localeIdentifier: String?
 
     init(controller: PermissionFlowController) {
@@ -55,6 +57,7 @@ final class FloatingDropPanel: NSPanel {
         hidesOnDeactivate = false
         animationBehavior = .utilityWindow
 
+        hostingView.sizingOptions = []
         hostingView.translatesAutoresizingMaskIntoConstraints = false
         contentView = hostingView
         setContentSize(CGSize(width: initialPanelWidth, height: measuredPanelHeight(for: initialPanelWidth)))
@@ -112,7 +115,11 @@ final class FloatingDropPanel: NSPanel {
         isAnimatingLaunch = false
         alphaValue = 1
         setContentSize(CGSize(width: frame.width, height: measuredPanelHeight(for: frame.width)))
-        setFrame(launchSourceFrame(for: sourceFrameInScreen), display: false)
+        let launchFrame = launchSourceFrame(for: sourceFrameInScreen)
+        let sourceFrame = clampedFrame(launchFrame, near: sourceFrameInScreen)
+        preparedLaunchSourceFrameInScreen = sourceFrameInScreen
+        preparedLaunchFromFrame = sourceFrame
+        setFrame(sourceFrame, display: false)
         orderFrontRegardless()
     }
 
@@ -131,8 +138,10 @@ final class FloatingDropPanel: NSPanel {
         }
 
         isAnimatingLaunch = true
-        launchFromFrame = launchSourceFrame(for: sourceFrameInScreen)
+        launchFromFrame = preparedLaunchFrame(for: sourceFrameInScreen)
         launchToFrame = targetFrame
+        preparedLaunchSourceFrameInScreen = nil
+        preparedLaunchFromFrame = nil
         launchStartTime = CACurrentMediaTime()
         alphaValue = initialAlpha
         setFrame(launchFromFrame, display: false)
@@ -181,9 +190,7 @@ final class FloatingDropPanel: NSPanel {
     /// The panel aligns to the trailing content area, stays underneath the
     /// window, and is clamped to the visible frame of the matching screen.
     private func targetFrame(for settingsFrame: CGRect) -> CGRect {
-        let screenFrame = NSScreen.screens
-            .first(where: { $0.frame.intersects(settingsFrame) })?
-            .visibleFrame ?? settingsFrame
+        let screenFrame = screenFrame(for: settingsFrame)
 
         // The helper panel is anchored to the trailing content area of System
         // Settings rather than the full window width because the leading
@@ -239,11 +246,62 @@ final class FloatingDropPanel: NSPanel {
         )
     }
 
+    private func preparedLaunchFrame(for sourceFrameInScreen: CGRect) -> CGRect {
+        if let preparedLaunchSourceFrameInScreen,
+           preparedLaunchSourceFrameInScreen == sourceFrameInScreen,
+           let preparedLaunchFromFrame {
+            return preparedLaunchFromFrame
+        }
+
+        return clampedFrame(launchSourceFrame(for: sourceFrameInScreen), near: sourceFrameInScreen)
+    }
+
+    /// Finds the best visible screen for a tracked frame. The tracker sometimes
+    /// gets a transient frame that does not intersect a screen yet, so falling
+    /// back to the nearest screen is safer than preserving bad coordinates.
+    private func screenFrame(for frame: CGRect) -> CGRect {
+        let screens = NSScreen.screens
+        if let screen = screens.first(where: { $0.frame.intersects(frame) || $0.visibleFrame.intersects(frame) }) {
+            return screen.visibleFrame
+        }
+
+        let frameCenter = CGPoint(x: frame.midX, y: frame.midY)
+        let nearestScreen = screens.min { lhs, rhs in
+            squaredDistance(from: frameCenter, to: lhs.visibleFrame) < squaredDistance(from: frameCenter, to: rhs.visibleFrame)
+        }
+
+        return nearestScreen?.visibleFrame ?? frame
+    }
+
+    private func clampedFrame(_ frame: CGRect, near referenceFrame: CGRect? = nil) -> CGRect {
+        let screenFrame = screenFrame(for: referenceFrame ?? frame)
+        let width = min(frame.width, max(1, screenFrame.width - (screenInset * 2)))
+        let height = min(frame.height, max(1, screenFrame.height - (screenInset * 2)))
+        let minX = screenFrame.minX + screenInset
+        let maxX = screenFrame.maxX - width - screenInset
+        let minY = screenFrame.minY + screenInset
+        let maxY = screenFrame.maxY - height - screenInset
+
+        return CGRect(
+            x: max(minX, min(frame.minX, maxX)),
+            y: max(minY, min(frame.minY, maxY)),
+            width: width,
+            height: height
+        )
+    }
+
+    private func squaredDistance(from point: CGPoint, to rect: CGRect) -> CGFloat {
+        let clampedX = max(rect.minX, min(point.x, rect.maxX))
+        let clampedY = max(rect.minY, min(point.y, rect.maxY))
+        let dx = point.x - clampedX
+        let dy = point.y - clampedY
+        return (dx * dx) + (dy * dy)
+    }
+
     /// Measures the SwiftUI content at a specific width so the panel height can
     /// fit its dynamic contents before being positioned or animated.
     private func measuredPanelHeight(for width: CGFloat) -> CGFloat {
         sizingView.setFrameSize(NSSize(width: width, height: sizingHeightLimit))
-        sizingView.layoutSubtreeIfNeeded()
         return max(minimumPanelHeight, sizingView.fittingSize.height)
     }
 
@@ -255,13 +313,16 @@ final class FloatingDropPanel: NSPanel {
             isAnimatingLaunch = false
             stopLaunchAnimation()
             alphaValue = 1
-            setFrame(launchToFrame, display: true)
+            let finalFrame = clampedFrame(launchToFrame)
+            setFrame(finalFrame, display: true)
             return
         }
 
         let progress = springProgress(at: elapsed)
         alphaValue = initialAlpha + ((1 - initialAlpha) * progress)
-        setFrame(curvedFrame(from: launchFromFrame, to: launchToFrame, progress: progress), display: true)
+        let frame = curvedFrame(from: launchFromFrame, to: launchToFrame, progress: progress)
+        let clamped = clampedFrame(frame, near: launchToFrame)
+        setFrame(clamped, display: true)
     }
 
     /// Stops and clears the timer that drives the launch animation.

@@ -318,9 +318,8 @@ final class SettingsWindowTracker {
 
     /// Converts a global top-left-origin rectangle from CG/AX space into
     /// AppKit screen coordinates by matching the rect to its containing screen.
-    /// The `+ 28` vertical offset is an intentional visual compensation used
-    /// by this package so the floating helper panel sits closer to the visible
-    /// bottom edge of the System Settings window.
+    /// Visual attachment offsets belong in `FloatingDropPanel.targetFrame`,
+    /// not in this coordinate conversion.
     private func appKitFrame(fromGlobalTopLeftFrame frame: CGRect) -> CGRect {
         let screens = NSScreen.screens.compactMap { screen -> (frame: CGRect, cgBounds: CGRect)? in
             guard
@@ -340,14 +339,16 @@ final class SettingsWindowTracker {
                     < rhs.cgBounds.intersection(frame).width * rhs.cgBounds.intersection(frame).height
             }
 
-        guard let matchedScreen else { return frame }
+        guard let matchedScreen else {
+            return frame
+        }
 
         let localX = frame.minX - matchedScreen.cgBounds.minX
         let localY = frame.minY - matchedScreen.cgBounds.minY
 
         return CGRect(
             x: matchedScreen.frame.minX + localX,
-            y: matchedScreen.frame.maxY - localY - frame.height - 3,
+            y: matchedScreen.frame.maxY - localY - frame.height,
             width: frame.width,
             height: frame.height
         )
